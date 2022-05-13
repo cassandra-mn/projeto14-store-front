@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import {useRef} from 'react';
-import {FaAngleLeft} from 'react-icons/fa';
-import {FaAngleRight} from 'react-icons/fa';
+import {FaAngleLeft, FaAngleRight} from 'react-icons/fa';
 
 import image1 from '../assets/image1.png';
 import card from '../assets/credit-card.png';
@@ -13,36 +12,36 @@ export default function HomeScreen() {
     const slogan = [image1, image1, image1, image1];
     const carousel = useRef(null);
     const informations = useRef(null);
+    const products = useRef(null);
+    const releases = useRef(null);
+    const favorites = useRef(null);
 
-    setInterval(rightClick, 5000);
-    setInterval(informationsPass, 5000);
+    setInterval(() => {
+        rightClick(carousel);
+        rightClick(informations);
+    }, 5000);
 
-    function leftClick() {
-        carousel.current.scrollLeft -= carousel.current.offsetWidth;
+    function leftClick(ref) {
+        ref.current.scrollLeft -= ref.current.offsetWidth;
     }
-    
-    function informationsPass() {
-        if (informations.current.scrollLeft > informations.current.offsetWidth) informations.current.scrollLeft = 0;
-        informations.current.scrollLeft += informations.current.offsetWidth;
-    }
 
-    function rightClick() {
-        if (carousel.current.scrollLeft > carousel.current.offsetWidth) carousel.current.scrollLeft = 0;
-        carousel.current.scrollLeft += carousel.current.offsetWidth;
+    function rightClick(ref) {
+        console.log(ref.current.scrollLeft)
+        console.log(ref.current.offsetWidth)
+        if (ref.current.scrollLeft > ref.current.offsetWidth) ref.current.scrollLeft = 0;
+        ref.current.scrollLeft += ref.current.offsetWidth;
     }
 
     return (
         <Container>
             <Nav>aqui é o navbar</Nav>
             <Carousel ref={carousel}>
-                <Buttons>
-                    <Button onClick={leftClick}><FaAngleLeft/></Button>
-                    <Button onClick={rightClick}><FaAngleRight/></Button>
+                <Buttons> 
+                    <Button onClick={() => leftClick(carousel)}><FaAngleLeft/></Button>
+                    <Button onClick={() => rightClick(carousel)}><FaAngleRight/></Button>
                 </Buttons>
                 <Images>
-                    {slogan.map(image => {
-                        return <Slogan src={image}/>
-                    })}
+                    {slogan.map(image => <Slogan src={image}/>)}
                 </Images>
             </Carousel>
             <Informations ref={informations}>
@@ -50,14 +49,14 @@ export default function HomeScreen() {
                     <Img src={card} />
                     <Text>
                         <H1>PARCELAMENTO</H1>
-                        <P>Em até 12X</P>
+                        <P>Em até 12X nos cartões</P>
                     </Text>
                 </Tags>
                 <Tags>
                     <Img src={secure} />
                     <Text>
                         <H1>LOJA PROTEGIDA</H1>
-                        <P>Compra segura</P>
+                        <P>Compre com segurança</P>
                     </Text>
                 </Tags>
                 <Tags>
@@ -75,6 +74,55 @@ export default function HomeScreen() {
                     </Text>
                 </Tags>
             </Informations>
+            <Line></Line>
+            <Block>
+                <Title>--- Lançamentos ---</Title>
+                <Products ref={releases}>
+                    <button className='left' onClick={() => leftClick(releases)}><FaAngleLeft/></button>
+                    <button className='right' onClick={() => rightClick(releases)}><FaAngleRight/></button>
+                    <Product>
+                        <img src='https://images.tcdn.com.br/img/img_prod/749108/caneta_luxo_borboleta_listras_1000951_1_d65cb6addf28fd3dc8eea5fc6ad70d60.jpg'/>
+                        <h1>Caneta Borboleta</h1>
+                        <p>R$69,90</p>
+                    </Product>
+                    <Product>
+                        <img src='https://images.tcdn.com.br/img/img_prod/749108/caneta_luxo_borboleta_listras_1000951_1_d65cb6addf28fd3dc8eea5fc6ad70d60.jpg'/>
+                        <h1>Caneta Borboleta</h1>
+                        <p>R$69,90</p>
+                    </Product>
+                    <Product>
+                        <img src='https://images.tcdn.com.br/img/img_prod/749108/caneta_luxo_borboleta_listras_1000951_1_d65cb6addf28fd3dc8eea5fc6ad70d60.jpg'/>
+                        <h1>Caneta Borboleta</h1>
+                        <p>R$69,90</p>
+                    </Product>
+                    <Product>
+                        <img src='https://images.tcdn.com.br/img/img_prod/749108/caneta_luxo_borboleta_listras_1000951_1_d65cb6addf28fd3dc8eea5fc6ad70d60.jpg'/>
+                        <h1>Caneta Borboleta</h1>
+                        <p>R$69,90</p>
+                    </Product>
+                </Products>
+                <View>Ver mais</View>
+            </Block>
+            <Line></Line>
+            <Block>
+                <Title>--- Favoritos ---</Title>
+                <Products ref={favorites}>
+                    <button className='left' onClick={() => leftClick(favorites)}><FaAngleLeft/></button>
+                    <button className='right' onClick={() => rightClick(favorites)}><FaAngleRight/></button>
+                    <Product>
+                        <img src='https://m.media-amazon.com/images/I/61fzNgsJBxL._AC_SY355_.jpg'/>
+                        <h1>Planner Semanal</h1>
+                        <p>R$89,90</p>
+                    </Product>
+                    <Product>
+                        <img src='https://m.media-amazon.com/images/I/61fzNgsJBxL._AC_SY355_.jpg'/>
+                        <h1>Planner Semanal</h1>
+                        <p>R$89,90</p>
+                    </Product>
+                </Products>
+                <View>Ver mais</View>
+            </Block>
+            <Line></Line>
             <Footer>aqui é o footer</Footer>
         </Container>
     );
@@ -84,11 +132,13 @@ const Container = styled.div`
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
+    position: relative;
 `;
 
 const Carousel = styled.ul`
     width: 100vw;
-    max-height: 500px;
+    max-height: 600px;
+    position: relative;
     overflow: hidden;
     scroll-behavior: smooth;
     display: flex;
@@ -97,6 +147,7 @@ const Carousel = styled.ul`
 
 const Buttons = styled.div`
     width: 100vw;
+    z-index: 1;
     position: absolute;
     display: flex;
     justify-content: space-between;
@@ -127,13 +178,16 @@ const Slogan = styled.img`
 
 const Informations = styled.div`
     width: 100vw;
-    max-height: 200px;
+    max-height: 300px;
+    margin: 20px auto;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    position: relative;
     overflow: hidden;
     flex-wrap: wrap;
+    scroll-behavior: smooth;
 `;
 
 const Tags = styled.div`
@@ -144,14 +198,13 @@ const Tags = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    background-color: #FAFAD2;
+    background-color: #F0E68C;
 `;
 
 const Img = styled.img`
     width: auto;
     max-height: 50px;
     padding: 5px;
-    background-color: #FFFACD;
 `;
 
 const Text = styled.div`
@@ -170,12 +223,107 @@ const P = styled.p`
     font-size: 15px;
 `;
 
+const Line = styled.p`
+    width: 100vw;
+    border: 1px dotted black;
+`;
+
+const Block = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
+
+const Title = styled.div`
+    width: 100vw;
+    height: 100px;
+    margin-top: 10px;
+    padding: 30px;
+    font-size: 38px;
+    text-align: center;
+    font-family: 'Oleo Script Swash Caps', cursive;
+`;
+
+const Products = styled.div`
+    width: 100vw;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    overflow: auto;
+    flex-wrap: wrap;
+    scroll-behavior: smooth;
+
+    button {
+        width: 50px;
+        height: 50px;
+        margin: 15px;
+        font-size: 35px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        background-color: transparent;
+    }
+
+    button.left {
+        left: 0;
+    }
+
+    button.right {
+        right: 0;
+    }
+`;
+
+const Product = styled.div`
+    width: 100%;
+    height: 80%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 300px;
+        height: 300px;
+        background-color: white;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin: 18px;
+    }
+
+    p {
+        font-size: 18px;
+        font-weight: 700;
+    }
+`;
+
+const View = styled.button`
+    width: 120px;
+    height: 60px;
+    margin: 20px;
+    margin-bottom: 35px;
+    border: none;
+    background-color: #00FF7F;
+
+    :hover {
+        cursor: pointer;
+    }
+`;
+
 // apagar daqui pra baixo
 
 const Nav = styled.div`
     width: 100vw;
     height: 150px;
-    background-color: aquamarine;
+    background-color: gray;
 `;
 
 const Footer = styled.div`
@@ -183,5 +331,5 @@ const Footer = styled.div`
     height: 150px;
     bottom: 0;
     position: relative;
-    background-color: aquamarine;
+    background-color: gray;
 `;
