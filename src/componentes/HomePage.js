@@ -1,5 +1,6 @@
 import {FaAngleLeft, FaAngleRight} from 'react-icons/fa';
 import {useEffect, useState, useRef} from 'react';
+import {TailSpin} from 'react-loader-spinner';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -12,11 +13,20 @@ import box from '../assets/giftbox.png';
 export default function HomePage() {
     const [products, setProducts] = useState();
     const [collections, setCollections] = useState();
-    const slogan = [image1, image1, image1, image1];
+    const [releases, setReleases] = useState();
+    const [favorites, setFavorites] = useState();
     const carousel = useRef(null);
-    const informations = useRef(null);
-    const releases = useRef(null);
-    const favorites = useRef(null);
+    const information = useRef(null);
+    const release = useRef(null);
+    const favorite = useRef(null);
+    const slogan = [image1, image1, image1, image1];
+    const ok = products && collections && releases && favorites;
+    const informations = [
+        {image: card, title: 'PARCELAMENTO', text: 'Em até 12X nos cartões'}, 
+        {image: secure, title: 'LOJA PROTEGIDA', text: 'Compre com segurança'}, 
+        {image: phone, title: 'ATENDIMENTO', text: '24h por dia'}, 
+        {image: box, title: 'ENVIO ESPECIAL', text: 'Caixa personalizada'}
+    ];
 
     useEffect(() => {
         async function getProducts() {
@@ -25,6 +35,8 @@ export default function HomePage() {
             const collections = await axios.get('http://localhost:5000/collections');
             setProducts(products.data);
             setCollections(collections.data);
+            setReleases(products.data.filter(product => product.collection === 'releases'));
+            setFavorites(products.data.filter(product => product.collection === 'favorites'));
           } catch (error) {
             alert("Ocorreu um erro, tente novamente!");
             console.log(error.response);
@@ -33,12 +45,9 @@ export default function HomePage() {
         getProducts();
     }, []);
 
-    console.log(products);
-    console.log(collections);
-
     setInterval(() => {
         rightClick(carousel);
-        rightClick(informations);
+        rightClick(information);
     }, 5000);
 
     function leftClick(ref) {
@@ -50,7 +59,7 @@ export default function HomePage() {
         ref.current.scrollLeft += ref.current.offsetWidth;
     }
 
-    return collections ? (
+    return ok ? (
         <Container>
             <Carousel ref={carousel}>
                 <Buttons> 
@@ -61,71 +70,55 @@ export default function HomePage() {
                     {slogan.map(image => <Slogan src={image}/>)}
                 </Images>
             </Carousel>
-            <Informations ref={informations}>
-                <Tags>
-                    <Img src={card} />
-                    <Text>
-                        <H1>PARCELAMENTO</H1>
-                        <P>Em até 12X nos cartões</P>
-                    </Text>
-                </Tags>
-                <Tags>
-                    <Img src={secure} />
-                    <Text>
-                        <H1>LOJA PROTEGIDA</H1>
-                        <P>Compre com segurança</P>
-                    </Text>
-                </Tags>
-                <Tags>
-                    <Img src={phone} />
-                    <Text>
-                        <H1>ATENDIMENTO</H1>
-                        <P>24h por dia</P>
-                    </Text>
-                </Tags>
-                <Tags>
-                    <Img src={box} />
-                    <Text>
-                        <H1>ENVIO ESPECIAL</H1>
-                        <P>Caixa personalizada</P>
-                    </Text>
-                </Tags>
+            <Informations ref={information}>
+                {informations.map(information => {
+                    const {image, title, text} = information;
+                    return (
+                        <Tags>
+                            <Img src={image} />
+                            <Text>
+                                <H1>{title}</H1>
+                                <P>{text}</P>
+                            </Text>
+                        </Tags>
+                    );
+                })}
             </Informations>
             <Line></Line>
             <Block>
                 <Title>--- Lançamentos ---</Title>
-                <Products ref={releases}>
-                    <button className='left' onClick={() => leftClick(releases)}><FaAngleLeft/></button>
-                    <button className='right' onClick={() => rightClick(releases)}><FaAngleRight/></button>
-                    <Product>
-                        <img src='https://images.tcdn.com.br/img/img_prod/749108/caneta_luxo_borboleta_listras_1000951_1_d65cb6addf28fd3dc8eea5fc6ad70d60.jpg'/>
-                        <h1>Caneta Borboleta</h1>
-                        <p>R$69,90</p>
-                    </Product>
-                    <Product>
-                        <img src='https://images.tcdn.com.br/img/img_prod/749108/caneta_luxo_borboleta_listras_1000951_1_d65cb6addf28fd3dc8eea5fc6ad70d60.jpg'/>
-                        <h1>Caneta Borboleta</h1>
-                        <p>R$69,90</p>
-                    </Product>
+                <Products ref={release}>
+                    <button className='left' onClick={() => leftClick(release)}><FaAngleLeft/></button>
+                    <button className='right' onClick={() => rightClick(release)}><FaAngleRight/></button>
+                    {releases.map(release => {
+                        const {image, name, price} = release;
+                        return (
+                            <Product>
+                                <img src={image}/>
+                                <h1>{name}</h1>
+                                <p>R${price}</p>
+                            </Product>
+                        );
+                    })}
                 </Products>
                 <View>Ver mais</View>
             </Block>
             <Line></Line>
             <Block>
                 <Title>--- Favoritos ---</Title>
-                <Products ref={favorites}>
-                    <button className='left' onClick={() => leftClick(favorites)}><FaAngleLeft/></button>
-                    <button className='right' onClick={() => rightClick(favorites)}><FaAngleRight/></button>
-                    <Product>
-                        <img src='https://m.media-amazon.com/images/I/61fzNgsJBxL._AC_SY355_.jpg'/>
-                        <h1>Planner Semanal</h1>
-                        <p>R$89,90</p>
-                    </Product>
-                    <Product>
-                        <img src='https://m.media-amazon.com/images/I/61fzNgsJBxL._AC_SY355_.jpg'/>
-                        <h1>Planner Semanal</h1>
-                        <p>R$89,90</p>
-                    </Product>
+                <Products ref={favorite}>
+                    <button className='left' onClick={() => leftClick(favorite)}><FaAngleLeft/></button>
+                    <button className='right' onClick={() => rightClick(favorite)}><FaAngleRight/></button>
+                    {favorites.map(favorite => {
+                        const {image, name, price} = favorite;
+                        return (
+                            <Product>
+                                <img src={image}/>
+                                <h1>{name}</h1>
+                                <p>R${price}</p>
+                            </Product>
+                        );
+                    })}
                 </Products>
                 <View>Ver mais</View>
             </Block>
@@ -142,7 +135,7 @@ export default function HomePage() {
             </Categories>
             <Line></Line>
         </Container>
-    ) : <>Carregando</>;
+    ) : <Loading><TailSpin color='#D2691E'/></Loading>;
 }
 
 const Container = styled.div`
@@ -389,4 +382,12 @@ const Category = styled.div`
         cursor: pointer;
         opacity: 0.5;
     }
+`;
+
+const Loading = styled.div`
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
