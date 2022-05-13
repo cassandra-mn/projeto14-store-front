@@ -1,6 +1,7 @@
-import styled from 'styled-components';
-import {useRef} from 'react';
 import {FaAngleLeft, FaAngleRight} from 'react-icons/fa';
+import {useEffect, useState, useRef} from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
 import image1 from '../assets/image1.png';
 import card from '../assets/credit-card.png';
@@ -8,13 +9,32 @@ import phone from '../assets/24-hours.png';
 import secure from '../assets/shield.png';
 import box from '../assets/giftbox.png';
 
-export default function HomeScreen() {
+export default function HomePage() {
+    const [products, setProducts] = useState();
+    const [collections, setCollections] = useState();
     const slogan = [image1, image1, image1, image1];
     const carousel = useRef(null);
     const informations = useRef(null);
-    const products = useRef(null);
     const releases = useRef(null);
     const favorites = useRef(null);
+
+    useEffect(() => {
+        async function getProducts() {
+          try {
+            const products = await axios.get('http://localhost:5000/products');
+            const collections = await axios.get('http://localhost:5000/collections');
+            setProducts(products.data);
+            setCollections(collections.data);
+          } catch (error) {
+            alert("Ocorreu um erro, tente novamente!");
+            console.log(error.response);
+          }
+        }
+        getProducts();
+    }, []);
+
+    console.log(products);
+    console.log(collections);
 
     setInterval(() => {
         rightClick(carousel);
@@ -30,7 +50,7 @@ export default function HomeScreen() {
         ref.current.scrollLeft += ref.current.offsetWidth;
     }
 
-    return (
+    return collections ? (
         <Container>
             <Carousel ref={carousel}>
                 <Buttons> 
@@ -111,26 +131,18 @@ export default function HomeScreen() {
             </Block>
             <Line></Line>
             <Categories>
-                <Category>
-                    <img src='http://d3ugyf2ht6aenh.cloudfront.net/stores/001/770/845/products/planner-2022-minimalista-terrazzo1-94c37c5bcc0a949f4016370139487276-640-0.jpeg'/>
-                    <h1>Planners</h1>
-                </Category>
-                <Category>
-                    <img src='https://ae01.alicdn.com/kf/HTB1hQgUJpXXXXXCXFXXq6xXFXXXH/10-pe-as-lote-atacado-estudantes-papelaria-gel-caneta-criativa-material-escolar-acess-rio-de.jpg'/>
-                    <h1>Canetas</h1>
-                </Category>
-                <Category>
-                    <img src='https://cdn.awsli.com.br/600x450/765/765263/produto/43542300/bf4d8d8d18.jpg'/>
-                    <h1>Clips</h1>
-                </Category>
-                <Category>
-                    <img src='https://28902.cdn.simplo7.net/static/28902/sku/papelaria-planners-adesivos-para-planners--p-1576254316563.jpg'/>
-                    <h1>Adesivos</h1>
-                </Category>
+                {collections.map(collection => {
+                    return (
+                        <Category>
+                            <img src={collection.image}/>
+                            <h1>{collection.name}</h1>
+                        </Category>
+                    );
+                })}
             </Categories>
             <Line></Line>
         </Container>
-    );
+    ) : <>Carregando</>;
 }
 
 const Container = styled.div`
