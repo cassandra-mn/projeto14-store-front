@@ -26,15 +26,12 @@ export default function HomeScreen() {
     }
 
     function rightClick(ref) {
-        console.log(ref.current.scrollLeft)
-        console.log(ref.current.offsetWidth)
         if (ref.current.scrollLeft > ref.current.offsetWidth) ref.current.scrollLeft = 0;
         ref.current.scrollLeft += ref.current.offsetWidth;
     }
 
     return (
         <Container>
-            <Nav>aqui é o navbar</Nav>
             <Carousel ref={carousel}>
                 <Buttons> 
                     <Button onClick={() => leftClick(carousel)}><FaAngleLeft/></Button>
@@ -90,16 +87,6 @@ export default function HomeScreen() {
                         <h1>Caneta Borboleta</h1>
                         <p>R$69,90</p>
                     </Product>
-                    <Product>
-                        <img src='https://images.tcdn.com.br/img/img_prod/749108/caneta_luxo_borboleta_listras_1000951_1_d65cb6addf28fd3dc8eea5fc6ad70d60.jpg'/>
-                        <h1>Caneta Borboleta</h1>
-                        <p>R$69,90</p>
-                    </Product>
-                    <Product>
-                        <img src='https://images.tcdn.com.br/img/img_prod/749108/caneta_luxo_borboleta_listras_1000951_1_d65cb6addf28fd3dc8eea5fc6ad70d60.jpg'/>
-                        <h1>Caneta Borboleta</h1>
-                        <p>R$69,90</p>
-                    </Product>
                 </Products>
                 <View>Ver mais</View>
             </Block>
@@ -123,7 +110,25 @@ export default function HomeScreen() {
                 <View>Ver mais</View>
             </Block>
             <Line></Line>
-            <Footer>aqui é o footer</Footer>
+            <Categories>
+                <Category>
+                    <img src='http://d3ugyf2ht6aenh.cloudfront.net/stores/001/770/845/products/planner-2022-minimalista-terrazzo1-94c37c5bcc0a949f4016370139487276-640-0.jpeg'/>
+                    <h1>Planners</h1>
+                </Category>
+                <Category>
+                    <img src='https://ae01.alicdn.com/kf/HTB1hQgUJpXXXXXCXFXXq6xXFXXXH/10-pe-as-lote-atacado-estudantes-papelaria-gel-caneta-criativa-material-escolar-acess-rio-de.jpg'/>
+                    <h1>Canetas</h1>
+                </Category>
+                <Category>
+                    <img src='https://cdn.awsli.com.br/600x450/765/765263/produto/43542300/bf4d8d8d18.jpg'/>
+                    <h1>Clips</h1>
+                </Category>
+                <Category>
+                    <img src='https://28902.cdn.simplo7.net/static/28902/sku/papelaria-planners-adesivos-para-planners--p-1576254316563.jpg'/>
+                    <h1>Adesivos</h1>
+                </Category>
+            </Categories>
+            <Line></Line>
         </Container>
     );
 }
@@ -253,7 +258,7 @@ const Products = styled.div`
     justify-content: center;
     flex-direction: column;
     position: relative;
-    overflow: auto;
+    overflow: hidden;
     flex-wrap: wrap;
     scroll-behavior: smooth;
 
@@ -262,12 +267,18 @@ const Products = styled.div`
         height: 50px;
         margin: 15px;
         font-size: 35px;
+        border-radius: 50px;
         border: none;
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
         background-color: transparent;
+
+        :hover {
+            cursor: pointer;
+            background-color: #BDB76B;
+        }
     }
 
     button.left {
@@ -310,26 +321,60 @@ const View = styled.button`
     height: 60px;
     margin: 20px;
     margin-bottom: 35px;
+    font-size: 16px;
     border: none;
     background-color: #00FF7F;
 
     :hover {
         cursor: pointer;
+        color: #FFFFFF;
+        background-color: #228B22;
     }
 `;
 
-// apagar daqui pra baixo
-
-const Nav = styled.div`
+const Categories = styled.div`
     width: 100vw;
-    height: 150px;
-    background-color: gray;
+    min-height: 600px;
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 `;
 
-const Footer = styled.div`
-    width: 100vw;
-    height: 150px;
-    bottom: 0;
+const Category = styled.div`
+    width: 400px;
+    max-height: 400px;
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    background-color: gray;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px #CD853F;
+
+    img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+    }
+
+    h1 {
+        width: 220px;
+        height: 70px;
+        font-size: 33px;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        color: #CD853F;
+        background-color: #FFFFFF;
+        font-family: 'Oleo Script Swash Caps', cursive;
+    }
+
+    :hover {
+        cursor: pointer;
+        opacity: 0.5;
+    }
 `;
