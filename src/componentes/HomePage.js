@@ -16,6 +16,7 @@ export default function HomePage() {
     const [collections, setCollections] = useState();
     const [releases, setReleases] = useState();
     const [favorites, setFavorites] = useState();
+    const [hidden, setHidden] = useState({release: 'none', favorite: 'none'}); 
     const carousel = useRef(null);
     const information = useRef(null);
     const release = useRef(null);
@@ -69,14 +70,14 @@ export default function HomePage() {
                     <Button onClick={() => rightClick(carousel)}><FaAngleRight/></Button>
                 </Buttons>
                 <Images>
-                    {slogan.map(image => <Slogan src={image}/>)}
+                    {slogan.map(image => <Slogan key={image._id} src={image}/>)}
                 </Images>
             </Carousel>
             <Informations ref={information}>
                 {informations.map(information => {
                     const {image, title, text} = information;
                     return (
-                        <Tags>
+                        <Tags key={information._id}>
                             <Img src={image} />
                             <Text>
                                 <H1>{title}</H1>
@@ -90,15 +91,18 @@ export default function HomePage() {
             <Block>
                 <Title>--- Lançamentos ---</Title>
                 <Products ref={release}>
-                    <button className='left' onClick={() => leftClick(release)}><FaAngleLeft/></button>
-                    <button className='right' onClick={() => rightClick(release)}><FaAngleRight/></button>
+                    <button className='arrow left' onClick={() => leftClick(release)}><FaAngleLeft/></button>
+                    <button className='arrow right' onClick={() => rightClick(release)}><FaAngleRight/></button>
                     {releases.map(release => {
                         const {image, name, price} = release;
+
                         return (
-                            <Product onClick={() => navigate(`/product/${release.code}`)}>
+                            <Product key={release._id} onMouseOver={() => setHidden({...hidden, release: 'block'})} onMouseOut={() => setHidden({...hidden, release: 'none'})}>
                                 <img src={image}/>
                                 <h1>{name}</h1>
                                 <p>R${price}</p>
+                                <Hidden display={hidden.release} className='see' onClick={() => navigate(`/product/${release.code}`)}>Ver Produto</Hidden>
+                                <Hidden display={hidden.release} className='buy' onClick={() => navigate('/checkout')}>Comprar Agora</Hidden> 
                             </Product>
                         );
                     })}
@@ -109,15 +113,18 @@ export default function HomePage() {
             <Block>
                 <Title>--- Favoritos ---</Title>
                 <Products ref={favorite}>
-                    <button className='left' onClick={() => leftClick(favorite)}><FaAngleLeft/></button>
-                    <button className='right' onClick={() => rightClick(favorite)}><FaAngleRight/></button>
+                    <button className='arrow left' onClick={() => leftClick(favorite)}><FaAngleLeft/></button>
+                    <button className='arrow right' onClick={() => rightClick(favorite)}><FaAngleRight/></button>
                     {favorites.map(favorite => {
                         const {image, name, price} = favorite;
+
                         return (
-                            <Product onClick={() => navigate(`/product/${favorite.code}`)}>
+                            <Product key={favorite._id} onMouseOver={() => setHidden({...hidden, favorite: 'block'})} onMouseOut={() => setHidden({...hidden, favorite: 'none'})}>
                                 <img src={image}/>
                                 <h1>{name}</h1>
                                 <p>R${price}</p>
+                                <Hidden display={hidden.favorite} className='see' onClick={() => navigate(`/product/${favorite.code}`)}>Ver Produto</Hidden>
+                                <Hidden display={hidden.favorite} className='buy' onClick={() => navigate('/checkout')}>Comprar Agora</Hidden>
                             </Product>
                         );
                     })}
@@ -128,7 +135,7 @@ export default function HomePage() {
             <Categories>
                 {collections.map(collection => {
                     return (
-                        <Category onClick={() => navigate(`/collection/${collection.name}`)}>
+                        <Category key={collection._id} onClick={() => navigate(`/collection/${collection.name}`)}>
                             <img src={collection.image}/>
                             <h1>{collection.name}</h1>
                         </Category>
@@ -269,7 +276,7 @@ const Products = styled.div`
     flex-wrap: wrap;
     scroll-behavior: smooth;
 
-    button {
+    .arrow {
         width: 50px;
         height: 50px;
         margin: 15px;
@@ -298,13 +305,14 @@ const Products = styled.div`
 `;
 
 const Product = styled.div`
-    width: 100%;
-    height: 80%;
+    width: 330px;
+    height: 500px;
     margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
 
     img {
         width: 300px;
@@ -321,6 +329,38 @@ const Product = styled.div`
         font-size: 18px;
         font-weight: 700;
     }
+
+    .see {
+        bottom: 80px;
+    }
+
+    .buy {
+        bottom: 10px;
+    }
+
+    :hover {
+        border: 1px solid lightgray;
+        box-shadow: inset 0 0 1em gray;
+        opacity: 0.9;
+    }
+`;
+
+const Hidden = styled.button`
+    width: 200px;
+    height: 60px;
+    font-size: 16px;
+    border-radius: 50px;
+    font-weight: 700;
+    border: none;
+    position: absolute;
+    color: #FFFFFF;
+    background-color: #CD853F;
+    display: ${props => props.display};
+    
+    :hover {
+        cursor: pointer;
+        background-color: #8B4513;
+    }
 `;
 
 const View = styled.button`
@@ -328,13 +368,14 @@ const View = styled.button`
     height: 60px;
     margin: 20px;
     margin-bottom: 35px;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 700;
     border: none;
+    color: #FFFFFF;
     background-color: #00FF7F;
 
     :hover {
         cursor: pointer;
-        color: #FFFFFF;
         background-color: #228B22;
     }
 `;
