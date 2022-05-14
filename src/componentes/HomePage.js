@@ -128,7 +128,7 @@ export default function HomePage() {
             <Categories>
                 {collections.map(collection => {
                     return (
-                        <Category>
+                        <Category onClick={() => navigate(`/collection/${collection.name}`)}>
                             <img src={collection.image}/>
                             <h1>{collection.name}</h1>
                         </Category>
