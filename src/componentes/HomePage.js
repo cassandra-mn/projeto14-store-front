@@ -1,4 +1,5 @@
 import {FaAngleLeft, FaAngleRight} from 'react-icons/fa';
+import {useNavigate} from 'react-router-dom';
 import {useEffect, useState, useRef} from 'react';
 import {TailSpin} from 'react-loader-spinner';
 import styled from 'styled-components';
@@ -19,6 +20,7 @@ export default function HomePage() {
     const information = useRef(null);
     const release = useRef(null);
     const favorite = useRef(null);
+    const navigate = useNavigate();
     const slogan = [image1, image1, image1, image1];
     const ok = products && collections && releases && favorites;
     const informations = [
@@ -93,7 +95,7 @@ export default function HomePage() {
                     {releases.map(release => {
                         const {image, name, price} = release;
                         return (
-                            <Product>
+                            <Product onClick={() => navigate(`/product/${release.code}`)}>
                                 <img src={image}/>
                                 <h1>{name}</h1>
                                 <p>R${price}</p>
@@ -112,7 +114,7 @@ export default function HomePage() {
                     {favorites.map(favorite => {
                         const {image, name, price} = favorite;
                         return (
-                            <Product>
+                            <Product onClick={() => navigate(`/product/${favorite.code}`)}>
                                 <img src={image}/>
                                 <h1>{name}</h1>
                                 <p>R${price}</p>
