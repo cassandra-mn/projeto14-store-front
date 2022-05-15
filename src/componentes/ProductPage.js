@@ -25,6 +25,7 @@ export default function ProductPage() {
             alert('Produto adicionado ao carrinho');
         } catch(e) {
             if (e.response.status === 403) alert('O produto já foi adicionado ao carrinho');
+            console.log(e.response);
         }
     }
 
@@ -44,7 +45,7 @@ export default function ProductPage() {
             <Name>{product.name}</Name>
             <Price>R${product.price}</Price>
             <Cont>
-                <button className='less' onClick={() => setAmount(amount - 1)}>-</button>
+                <button className='less' onClick={() => amount > 1 ? setAmount(amount - 1) : ''}>-</button>
                 {amount}
                 <button className='more' onClick={() => setAmount(amount + 1)}>+</button>
             </Cont>

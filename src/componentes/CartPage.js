@@ -7,6 +7,7 @@ import axios from 'axios';
 export default function CheckoutPage() {
     const navigate = useNavigate();
     const [cart, setCart] = useState();
+    let totalAmount = 0;
     
     useEffect(() => getProduct(), []);
 
@@ -22,7 +23,7 @@ export default function CheckoutPage() {
 
     async function less(product) {
         const {code, amount} = product;
-        await axios.put(`http://localhost:5000/cart/${code}`, {...product, amount: amount - 1});
+        if (amount > 1) await axios.put(`http://localhost:5000/cart/${code}`, {...product, amount: amount - 1});
     }
 
     async function more(product) {
@@ -32,30 +33,36 @@ export default function CheckoutPage() {
 
     return cart ? (
         cart.length > 0 ? (
-            <Container>
+        <Container>
             {cart.map(product => {
                 const {image, name, price, amount} = product;
+                const total = (product.price * amount).toFixed(2).replace('.', ',');
+                totalAmount += (product.price * amount);
 
                 return (
-                    <p>
-                    <Image src={image} />
-                    <Name>{name}</Name>
-                    <Price>R${price}</Price>
-                    <Cont>
-                        <button className='less' onClick={() => {less(product); window.location.reload()}}>-</button>
-                        {amount}
-                        <button className='more' onClick={() => {more(product); window.location.reload()}}>+</button>
-                    </Cont>
-                    <Del onClick={() => exclude(product)}>Deletar</Del>
-                    </p>
+                    <Product>
+                        <Image src={image} />
+                        <Name>{name}</Name>
+                        <Price>R${price}</Price>
+                        <Cont>
+                            <button className='less' onClick={() => {less(product); window.location.reload()}}>-</button>
+                            {amount}
+                            <button className='more' onClick={() => {more(product); window.location.reload()}}>+</button>
+                        </Cont>
+                        <Del onClick={() => exclude(product)}>Deletar</Del>
+                        <Total>{total}</Total>
+                    </Product>
                 );
             })} 
-            </Container>
+            <TotalAmount>Total da compra: {totalAmount.toFixed(2).replace('.', ',')}</TotalAmount>
+            <Back onClick={() => navigate('/')}>Continuar comprando</Back>
+            <Buy onClick={() => navigate('/checkout')}>Finalizar comprar</Buy>
+        </Container>
         ) : (
-            <Container>
-                <Text>Seu carrinho está vazio</Text>
-                <Back onClick={() => navigate('/')}>Adicionar produtos</Back>
-            </Container>
+        <Container>
+            <Text>Seu carrinho está vazio</Text>
+            <Back onClick={() => navigate('/')}>Adicionar produtos</Back>
+        </Container>
         )) : 
         <Loading><TailSpin color='#D2691E'/></Loading>;
 }
@@ -65,6 +72,10 @@ const Container = styled.div`
     height: 100vh;
     overflow-x: hidden;
     position: relative;
+`;
+
+const Product = styled.p`
+
 `;
 
 const Image = styled.img`
@@ -90,6 +101,7 @@ const Cont = styled.div`
 
 const Del = styled.button`
 
+
     :hover {
         cursor: pointer;
     }
@@ -100,6 +112,23 @@ const Text = styled.p`
 `;
 
 const Back = styled.button`
+
+
+    :hover {
+        cursor: pointer;
+    }
+`;
+
+const Total = styled.p`
+
+`;
+
+const TotalAmount = styled.p`
+
+`;
+
+const Buy = styled.button`
+
 
     :hover {
         cursor: pointer;
