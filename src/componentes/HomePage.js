@@ -1,7 +1,7 @@
 import {FaAngleLeft, FaAngleRight} from 'react-icons/fa';
-import {useNavigate} from 'react-router-dom';
 import {useEffect, useState, useRef} from 'react';
 import {TailSpin} from 'react-loader-spinner';
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
