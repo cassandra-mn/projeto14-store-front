@@ -1,12 +1,15 @@
-import {TailSpin} from 'react-loader-spinner';
+import {useState, useEffect, useContext} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import {TailSpin} from 'react-loader-spinner';
 import styled from 'styled-components';
 import axios from 'axios';
+
+import AmountContext from '../context/AmountContext';
 
 export default function CheckoutPage() {
     const navigate = useNavigate();
     const [cart, setCart] = useState();
+    const {amount, setAmount} = useContext(AmountContext);
     
     useEffect(() => getProduct(), []);
 
@@ -20,16 +23,32 @@ export default function CheckoutPage() {
         getProduct();
     }
 
+    async function less(product) {
+        setAmount(amount - 1);
+        await axios.put(`http://localhost:5000/cart/${product.code}`, {...product, amount: amount - 1});
+    }
+
+    async function more(product) {
+        setAmount(amount + 1);
+        await axios.put(`http://localhost:5000/cart/${product.code}`, {...product, amount: amount + 1});
+    }
+
     return cart ? (
         cart.length > 0 ? (
             <Container>
             {cart.map(product => {
+                const {image, name, price} = product;
+
                 return (
                     <p>
-                    <Image src={product.image} />
-                    <Name>{product.name}</Name>
-                    <Price>R${product.price}</Price>
-                    <Cont>{product.amount}</Cont>
+                    <Image src={image} />
+                    <Name>{name}</Name>
+                    <Price>R${price}</Price>
+                    <Cont>
+                        <button className='less' onClick={() => less(product)}>-</button>
+                        {amount}
+                        <button className='more' onClick={() => more(product)}>+</button>
+                    </Cont>
                     <Del onClick={() => exclude(product)}>Deletar</Del>
                     </p>
                 );
@@ -65,6 +84,10 @@ const Price = styled.p`
 
 const Cont = styled.div`
 
+
+    button:hover {
+        cursor: pointer;
+    }
 `;
 
 const Del = styled.button`

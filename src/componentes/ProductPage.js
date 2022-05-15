@@ -1,14 +1,16 @@
 import {TailSpin} from 'react-loader-spinner';
 import {useNavigate, useParams} from 'react-router-dom';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+
+import AmountContext from '../context/AmountContext';
 
 export default function ProductPage() {
     const {id} = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState();
-    const [amount, setAmount] = useState(1);
+    const {amount, setAmount} = useContext(AmountContext);
   
     useEffect(() => {
         async function getProduct() {
