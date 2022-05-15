@@ -1,15 +1,12 @@
-import {useState, useEffect, useContext} from 'react';
+import {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {TailSpin} from 'react-loader-spinner';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import AmountContext from '../context/AmountContext';
-
 export default function CheckoutPage() {
     const navigate = useNavigate();
     const [cart, setCart] = useState();
-    const {amount, setAmount} = useContext(AmountContext);
     
     useEffect(() => getProduct(), []);
 
@@ -24,20 +21,20 @@ export default function CheckoutPage() {
     }
 
     async function less(product) {
-        setAmount(amount - 1);
-        await axios.put(`http://localhost:5000/cart/${product.code}`, {...product, amount: amount - 1});
+        const {code, amount} = product;
+        await axios.put(`http://localhost:5000/cart/${code}`, {...product, amount: amount - 1});
     }
 
     async function more(product) {
-        setAmount(amount + 1);
-        await axios.put(`http://localhost:5000/cart/${product.code}`, {...product, amount: amount + 1});
+        const {code, amount} = product;
+        await axios.put(`http://localhost:5000/cart/${code}`, {...product, amount: amount + 1});
     }
 
     return cart ? (
         cart.length > 0 ? (
             <Container>
             {cart.map(product => {
-                const {image, name, price} = product;
+                const {image, name, price, amount} = product;
 
                 return (
                     <p>
@@ -45,9 +42,9 @@ export default function CheckoutPage() {
                     <Name>{name}</Name>
                     <Price>R${price}</Price>
                     <Cont>
-                        <button className='less' onClick={() => less(product)}>-</button>
+                        <button className='less' onClick={() => {less(product); window.location.reload()}}>-</button>
                         {amount}
-                        <button className='more' onClick={() => more(product)}>+</button>
+                        <button className='more' onClick={() => {more(product); window.location.reload()}}>+</button>
                     </Cont>
                     <Del onClick={() => exclude(product)}>Deletar</Del>
                     </p>
@@ -71,7 +68,8 @@ const Container = styled.div`
 `;
 
 const Image = styled.img`
-
+    width: 200px;
+    height: 200px;
 `;
 
 const Name = styled.h1`
