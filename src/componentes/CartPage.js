@@ -5,19 +5,20 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 export default function CheckoutPage() {
-    const [cart, setCart] = useState();
     const navigate = useNavigate();
+    const [cart, setCart] = useState();
     
-    useEffect(() => {
-        async function getProduct() {
-            const products = await axios.get(`http://localhost:5000/cart`);
-            setCart(products.data);
-        }
-        getProduct();
-    }, []);
+    useEffect(() => getProduct(), []);
 
-    console.log(cart);
-    if (cart) console.log(cart.length);
+    async function getProduct() {
+        const products = await axios.get(`http://localhost:5000/cart`);
+        setCart(products.data);
+    }
+
+    async function exclude(product) {
+        await axios.delete(`http://localhost:5000/cart/${product.code}`);
+        getProduct();
+    }
 
     return cart ? (
         cart.length > 0 ? (
@@ -29,7 +30,7 @@ export default function CheckoutPage() {
                     <Name>{product.name}</Name>
                     <Price>R${product.price}</Price>
                     <Cont>{product.amount}</Cont>
-                    <Del onClick={() => alert('delete')}>Deletar</Del>
+                    <Del onClick={() => exclude(product)}>Deletar</Del>
                     </p>
                 );
             })} 
