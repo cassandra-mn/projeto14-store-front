@@ -41,7 +41,7 @@ export default function HomePage() {
             setReleases(products.data.filter(product => product.collection === 'releases'));
             setFavorites(products.data.filter(product => product.collection === 'favorites'));
           } catch (error) {
-            alert("Ocorreu um erro, tente novamente!");
+            alert('Ocorreu um erro, tente novamente!');
             console.log(error.response);
           }
         }
@@ -49,8 +49,8 @@ export default function HomePage() {
     }, []);
 
     setInterval(() => {
-        rightClick(carousel);
-        rightClick(information);
+        if (carousel.current) rightClick(carousel);
+        if (information.current) rightClick(information);
     }, 5000);
 
     function leftClick(ref) {
@@ -60,6 +60,16 @@ export default function HomePage() {
     function rightClick(ref) {
         if (ref.current.scrollLeft > ref.current.offsetWidth) ref.current.scrollLeft = 0;
         ref.current.scrollLeft += ref.current.offsetWidth;
+    }
+
+    async function checkout(product) {
+        try {
+            const body = {...product, price: parseFloat(product.price.replace(',', '.')), amount: 1};
+            await axios.post('http://localhost:5000/cart', body);
+            navigate('/cart');
+        } catch(e) {
+            if (e.response.status === 403) navigate('/cart');
+        }
     }
 
     return ok ? (
@@ -102,7 +112,7 @@ export default function HomePage() {
                                 <h1>{name}</h1>
                                 <p>R${price}</p>
                                 <Hidden display={hidden.release} className='see' onClick={() => navigate(`/product/${release.code}`)}>Ver Produto</Hidden>
-                                <Hidden display={hidden.release} className='buy' onClick={() => navigate('/checkout')}>Comprar Agora</Hidden> 
+                                <Hidden display={hidden.release} className='buy' onClick={() => checkout(release)}>Comprar Agora</Hidden> 
                             </Product>
                         );
                     })}
@@ -124,7 +134,7 @@ export default function HomePage() {
                                 <h1>{name}</h1>
                                 <p>R${price}</p>
                                 <Hidden display={hidden.favorite} className='see' onClick={() => navigate(`/product/${favorite.code}`)}>Ver Produto</Hidden>
-                                <Hidden display={hidden.favorite} className='buy' onClick={() => navigate('/checkout')}>Comprar Agora</Hidden>
+                                <Hidden display={hidden.favorite} className='buy' onClick={() => checkout(favorite)}>Comprar Agora</Hidden>
                             </Product>
                         );
                     })}
@@ -132,16 +142,19 @@ export default function HomePage() {
                 <View>Ver mais</View>
             </Block>
             <Line></Line>
-            <Categories>
-                {collections.map(collection => {
-                    return (
-                        <Category key={collection._id} onClick={() => navigate(`/collection/${collection.name}`)}>
-                            <img src={collection.image}/>
-                            <h1>{collection.name}</h1>
-                        </Category>
-                    );
-                })}
-            </Categories>
+            <Block>
+                <Categories>
+                    {collections.map(collection => {
+                        return (
+                            <Category key={collection._id} onClick={() => navigate(`/collection/${collection.name}`)}>
+                                <img src={collection.image}/>
+                                <h1>{collection.name}</h1>
+                            </Category>
+                        );
+                    })}
+                </Categories>
+                <View onClick={() => navigate('/collections')}>Ver mais</View>
+            </Block>
             <Line></Line>
         </Container>
     ) : <Loading><TailSpin color='#D2691E'/></Loading>;
