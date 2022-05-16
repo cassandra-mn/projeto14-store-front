@@ -3,27 +3,32 @@ import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import axios from 'axios';
 
-export default function SignInPage(){
+export default function SignUpPage(){
     const navigate = useNavigate();
     const [date, setDate] = useState({
+        name: '',
+        surname: '',
         email: '',
         password: ''
     });
 
-    async function login(){
+    async function register(){
         try{
-            await axios.post(`http://localhost:5000/sign-in`, date);    
-            alert('Sucesso');
+            await axios.post(`http://localhost:5000/sign-up`, date);    
+            alert('Cadastro realizado com sucesso!');
+            navigate('/signin');
         }catch(e){
-            alert(e.response.data)
+            alert(e.response.data);
         }
     }
     return(
         <Container>
+            <Input type='text' placeholder='Name' value={date.name} onChange={e => setDate({...date, name: e.target.value})}/>
+            <Input type='text' placeholder='Sobrenome' value={date.surname} onChange={e => setDate({...date, surname: e.target.value})}/>
             <Input type='email' placeholder='Email' value={date.email} onChange={e => setDate({...date, email: e.target.value})}/>
             <Input type='password' placeholder='Senha' value={date.password} onChange={e => setDate({...date, password: e.target.value})}/>
-            <Button onClick={login}>Entrar</Button>
-            <Cadastro onClick={() => navigate('/signup')}>Ainda não tem conta? Clique aqui e cadastre-se</Cadastro>
+            <Button onClick={register}>Cadastrar</Button>
+            <Entrar onClick={() => navigate('/signin')}>Já possue uma conta? Clique aqui e faça o login</Entrar>
         </Container>
     );
 }
@@ -58,7 +63,7 @@ const Button = styled.button `
     }
 `
 
-const Cadastro = styled.div `
+const Entrar = styled.div `
     width: 232px;
     height: 17px;
     font-size: 13px;
