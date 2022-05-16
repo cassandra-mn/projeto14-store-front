@@ -5,6 +5,7 @@ import { BsFillPersonFill, BsCart4, BsSearch } from "react-icons/bs";
 
 export default function Header(){
     const navigate = useNavigate();
+
     return(
         <Container>
             <Logo>
@@ -36,7 +37,7 @@ const Container = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #e5e5e5;
+    background-color: #F0E68C;
 `;
 const Logo = styled.div`
     width: 190px;
