@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import {FaPlus, FaMinus, FaRegTrashAlt} from 'react-icons/fa';
 import {useNavigate} from 'react-router-dom';
 import {TailSpin} from 'react-loader-spinner';
 import styled from 'styled-components';
@@ -41,16 +42,19 @@ export default function CheckoutPage() {
 
                 return (
                     <Product>
-                        <Image src={image} />
-                        <Name>{name}</Name>
-                        <Price>R${price}</Price>
-                        <Cont>
-                            <button className='less' onClick={() => {less(product); window.location.reload()}}>-</button>
-                            {amount}
-                            <button className='more' onClick={() => {more(product); window.location.reload()}}>+</button>
-                        </Cont>
-                        <Del onClick={() => exclude(product)}>Deletar</Del>
-                        <Total>{total}</Total>
+                        <Block>
+                            <Image src={image} />
+                            <Group>
+                                <Name>{name}</Name>
+                                <Total>{total}</Total>
+                            </Group>
+                            <Cont>
+                                <button className='more' onClick={() => {more(product); window.location.reload()}}><FaPlus /></button>
+                                {amount}
+                                <button className='less' onClick={() => {less(product); window.location.reload()}}><FaMinus /></button>
+                            </Cont>
+                            <Del onClick={() => exclude(product)}><FaRegTrashAlt /></Del>
+                        </Block>
                     </Product>
                 );
             })} 
@@ -70,17 +74,33 @@ export default function CheckoutPage() {
 const Container = styled.div`
     width: 100vw;
     height: 100vh;
+    padding: 35px;
     overflow-x: hidden;
     position: relative;
 `;
 
-const Product = styled.p`
+const Block = styled.div`
+    width: 300px;
+    height: 90px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
 
+const Product = styled.p`
+    display: flex;
 `;
 
 const Image = styled.img`
-    width: 200px;
-    height: 200px;
+    width: 80px;
+    height: 80px;
+`;
+
+const Group = styled.div`
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
 `;
 
 const Name = styled.h1`
@@ -92,7 +112,14 @@ const Price = styled.p`
 `;
 
 const Cont = styled.div`
+    width: 80px;
 
+    button {
+        width: 35px;
+        height: 100%;
+        border: none;
+        background: none;
+    }
 
     button:hover {
         cursor: pointer;
@@ -100,7 +127,6 @@ const Cont = styled.div`
 `;
 
 const Del = styled.button`
-
 
     :hover {
         cursor: pointer;
@@ -112,7 +138,13 @@ const Text = styled.p`
 `;
 
 const Back = styled.button`
-
+    width: 250px;
+    height: 50px;
+    margin: 15px 0;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
 
     :hover {
         cursor: pointer;
@@ -124,11 +156,17 @@ const Total = styled.p`
 `;
 
 const TotalAmount = styled.p`
-
+    margin: 20px 0;
 `;
 
 const Buy = styled.button`
-
+    width: 250px;
+    height: 50px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    background-color: #DAA520;
 
     :hover {
         cursor: pointer;
