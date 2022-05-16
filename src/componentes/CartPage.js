@@ -13,23 +13,23 @@ export default function CheckoutPage() {
     useEffect(() => getProduct(), []);
 
     async function getProduct() {
-        const products = await axios.get(`http://localhost:5000/cart`);
+        const products = await axios.get(`https://projeto-store.herokuapp.com/cart`);
         setCart(products.data);
     }
 
     async function exclude(product) {
-        await axios.delete(`http://localhost:5000/cart/${product.code}`);
+        await axios.delete(`https://projeto-store.herokuapp.com/cart/${product.code}`);
         getProduct();
     }
 
     async function less(product) {
         const {code, amount} = product;
-        if (amount > 1) await axios.put(`http://localhost:5000/cart/${code}`, {...product, amount: amount - 1});
+        if (amount > 1) await axios.put(`https://projeto-store.herokuapp.com/cart/${code}`, {...product, amount: amount - 1});
     }
 
     async function more(product) {
         const {code, amount} = product;
-        await axios.put(`http://localhost:5000/cart/${code}`, {...product, amount: amount + 1});
+        await axios.put(`https://projeto-store.herokuapp.com/cart/${code}`, {...product, amount: amount + 1});
     }
 
     return cart ? (

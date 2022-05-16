@@ -34,8 +34,8 @@ export default function HomePage() {
     useEffect(() => {
         async function getProducts() {
           try {
-            const products = await axios.get('http://localhost:5000/products');
-            const collections = await axios.get('http://localhost:5000/collections');
+            const products = await axios.get('https://projeto-store.herokuapp.com/products');
+            const collections = await axios.get('https://projeto-store.herokuapp.com/collections');
             setProducts(products.data);
             setCollections(collections.data);
             setReleases(products.data.filter(product => product.collection === 'releases'));
@@ -65,7 +65,7 @@ export default function HomePage() {
     async function checkout(product) {
         try {
             const body = {...product, price: parseFloat(product.price.replace(',', '.')), amount: 1};
-            await axios.post('http://localhost:5000/cart', body);
+            await axios.post('https://projeto-store.herokuapp.com/cart', body);
             navigate('/cart');
         } catch(e) {
             if (e.response.status === 403) navigate('/cart');

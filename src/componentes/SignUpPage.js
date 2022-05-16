@@ -17,7 +17,7 @@ export default function SignUpPage(){
 
     async function register(){
         try{
-            await axios.post(`http://localhost:5000/sign-up`, date);    
+            await axios.post(`https://projeto-store.herokuapp.com/sign-up`, date);    
             alert('Cadastro realizado com sucesso!');
             navigate('/signin');
         }catch(e){

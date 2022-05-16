@@ -12,7 +12,7 @@ export default function SignInPage(){
 
     async function login(){
         try{
-            await axios.post(`http://localhost:5000/sign-in`, date);    
+            await axios.post(`https://projeto-store.herokuapp.com/sign-in`, date);    
             alert('Sucesso');
         }catch(e){
             alert(e.response.data)

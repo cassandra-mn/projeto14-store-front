@@ -12,7 +12,7 @@ export default function CollectionPage() {
 
     useEffect(() => {
         async function getCollection() {
-            const response = await axios.get(`http://localhost:5000/collection/${id}`);
+            const response = await axios.get(`https://projeto-store.herokuapp.com/collection/${id}`);
             setProducts(response.data);
         }
         getCollection();
@@ -21,7 +21,7 @@ export default function CollectionPage() {
     async function checkout(product) {
         try {
             const body = {...product, price: parseFloat(product.price.replace(',', '.')), amount: 1};
-            await axios.post('http://localhost:5000/cart', body);
+            await axios.post('https://projeto-store.herokuapp.com/cart', body);
             navigate('/cart');
         } catch(e) {
             if (e.response.status === 403) navigate('/cart');

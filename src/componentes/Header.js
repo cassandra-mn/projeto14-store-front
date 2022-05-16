@@ -5,6 +5,7 @@ import { BsFillPersonFill, BsCart4, BsSearch } from "react-icons/bs";
 
 export default function Header(){
     const navigate = useNavigate();
+    
     return(
         <Container>
             <Logo>

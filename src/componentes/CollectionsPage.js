@@ -10,13 +10,11 @@ export default function CollectionsPage() {
     
     useEffect(() => {
         async function getCollections() {
-            const response = await axios.get('http://localhost:5000/collections');
+            const response = await axios.get('https://projeto-store.herokuapp.com/collections');
             setCollections(response.data);
         }
         getCollections();
     }, []);
-
-    console.log(collections);
 
     return collections ? (
         <Categories>

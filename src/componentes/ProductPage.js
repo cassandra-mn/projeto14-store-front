@@ -13,7 +13,7 @@ export default function ProductPage() {
   
     useEffect(() => {
         async function getProduct() {
-            const product = await axios.get(`http://localhost:5000/product/${id}`);
+            const product = await axios.get(`https://projeto-store.herokuapp.com/product/${id}`);
             setProduct(product.data);
         }
         getProduct();
@@ -22,7 +22,7 @@ export default function ProductPage() {
     async function cart() {        
         try {
             const body = {...product, price: parseFloat(product.price.replace(',', '.')), amount};
-            await axios.post('http://localhost:5000/cart', body);
+            await axios.post('https://projeto-store.herokuapp.com/cart', body);
             alert('Produto adicionado ao carrinho');
         } catch(e) {
             if (e.response.status === 403) alert('O produto já foi adicionado ao carrinho');
@@ -33,7 +33,7 @@ export default function ProductPage() {
     async function checkout() {
         try {
             const body = {...product, price: parseFloat(product.price.replace(',', '.')), amount};
-            await axios.post('http://localhost:5000/cart', body);
+            await axios.post('https://projeto-store.herokuapp.com/cart', body);
             navigate('/cart');
         } catch(e) {
             if (e.response.status === 403) navigate('/cart');
