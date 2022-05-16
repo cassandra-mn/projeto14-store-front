@@ -1,5 +1,5 @@
 export default function CollectionPage() {
     return (
-        <>Essa é a tela da coleção</>
+        <>Essa tela vai mostrar os produtos da coleção</>
     );
 }

@@ -5,6 +5,7 @@ import CartPage from './CartPage';
 import ProductPage from './ProductPage';
 import CheckoutPage from './CheckoutPage';
 import CollectionPage from './CollectionPage';
+import CollectionsPage from './CollectionsPage';
 
 export default function App() {
     return (
@@ -14,6 +15,7 @@ export default function App() {
                 <Route path='/cart' element={<CartPage />} />
                 <Route path='/checkout' element={<CheckoutPage />} />
                 <Route path='/product/:id' element={<ProductPage />} />
+                <Route path='/collections' element={<CollectionsPage />} />
                 <Route path='/collection/:id' element={<CollectionPage />} />
             </Routes>
         </BrowserRouter>
