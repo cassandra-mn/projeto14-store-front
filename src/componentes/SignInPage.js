@@ -38,7 +38,7 @@ const Input = styled.input`
     padding: 10px;
     margin-bottom: 5px;
     border-radius: 4px;
-    border: 1px solid #D5D5D5;
+    border: 1px solid #DAA520;
     background: #FFFFFF;
     ::placeholder {
         color: #DBDBDB;
@@ -52,7 +52,7 @@ const Button = styled.button `
     text-align: center;
     border: none;
     color: #FFFFFF;
-    background: #52B6FF;
+    background: #DAA520;
     :hover {
         cursor: pointer;
     }
@@ -66,7 +66,7 @@ const Cadastro = styled.div `
     text-align: center;
     font-family: 'Lexend Deca';
     text-decoration-line: underline;
-    color: #52B6FF;
+    color: #DAA520;
     :hover {
         cursor: pointer;
     }

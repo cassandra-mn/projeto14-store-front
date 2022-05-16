@@ -1,23 +1,26 @@
-import shield from '../assets/shield.png';
+import {useNavigate} from 'react-router-dom';
+import logo from '../assets/logo.png';
 import styled from 'styled-components';
+import { BsFillPersonFill, BsCart4, BsSearch } from "react-icons/bs";
 
 export default function Header(){
+    const navigate = useNavigate();
     return(
         <Container>
             <Logo>
-                <LogoImg src={shield}/>
+                <LogoImg onClick={() => navigate('/')} src={logo}/>
             </Logo>
             <SearchProducts>
                 <Input type='text' placeholder='Pesquise por produtos ou coleções'/>
-                <Button><Img src={shield}/></Button>
+                <Button><icon><BsSearch/></icon></Button>
             </SearchProducts>
             <ContainerOp>
                 <Cart>
-                    <Button><Img src={shield}/></Button>
+                    <Button onClick={() => navigate('/cart')}><BsCart4/></Button>
                 </Cart>
                 <UserArea>
-                    <p>Sign In/Sign Up</p>
-                    <Button><Img src={shield}/></Button>
+                    <UserName onClick={() => navigate('/signin')}>Sign In/Sign Up</UserName>
+                    <Button onClick={() => navigate('/signin')}><BsFillPersonFill/></Button>
                 </UserArea>
             </ContainerOp>
         </Container>
@@ -27,7 +30,7 @@ export default function Header(){
 const Container = styled.header`
     top: 0;
     min-width: 375px;
-    height: 70px;
+    height: 90px;
     z-index: 1;
     position: sticky;
     display: flex;
@@ -36,27 +39,21 @@ const Container = styled.header`
     background-color: #e5e5e5;
 `;
 const Logo = styled.div`
-    width: 75px;
-    height: 50px;
+    width: 190px;
+    height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
 `;
 const LogoImg = styled.img`
-    width: 51px;
-    height: 51px;
+    width: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #FFFFFF;
-`;
-const Img = styled.img`
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #FFFFFF;
+    :hover {
+        cursor: pointer;
+    }
 `;
 const SearchProducts = styled.div`
     width: 500px;
@@ -73,7 +70,7 @@ const Input = styled.input `
     padding: 10px;
     margin-bottom: 6px;
     border-radius: 5px;
-    border: 1px solid #D5D5D5;
+    border: 1px solid #DAA520;
     ::placeholder {
         color: #DBDBDB;
     }
@@ -82,11 +79,15 @@ const Button = styled.button `
     width: 45px;
     height: 45px;
     font-size: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     text-align: center;
     border: none;
     color: #FFFFFF;
+    background-color: #DAA520;
     
+    icon {
+        font-size: 20px;
+    }
     :hover {
         cursor: pointer;
     }
@@ -118,5 +119,9 @@ const UserArea = styled.div`
    
 `
 const UserName = styled.p`
-    font-size: 25px;
+    font-size: 20px;
+
+    :hover {
+        cursor: pointer;
+    }
 `
