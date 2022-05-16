@@ -79,7 +79,7 @@ const Container = styled.div`
 `;
 
 const Links = styled.div`
-    width: 200px;
+    width: 220px;
     font-size: 16px;
     display: flex;
     align-items: center;
