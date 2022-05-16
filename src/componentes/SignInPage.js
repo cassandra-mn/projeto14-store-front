@@ -1,18 +1,22 @@
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import axios from 'axios';
+import UserContext from '../context/UserContext';
 
 export default function SignInPage(){
     const navigate = useNavigate();
-    const [date, setDate] = useState({
+    const {setUser} = useContext(UserContext);
+    const [data, setData] = useState({
         email: '',
         password: ''
     });
 
     async function login(){
         try{
-            await axios.post(`http://localhost:5000/sign-in`, date);    
+            const response = await axios.post(`http://localhost:5000/sign-in`, data);    
+            setUser(response.data);
+            navigate('/');
             alert('Sucesso');
         }catch(e){
             alert(e.response.data)
@@ -20,8 +24,8 @@ export default function SignInPage(){
     }
     return(
         <Container>
-            <Input type='email' placeholder='Email' value={date.email} onChange={e => setDate({...date, email: e.target.value})}/>
-            <Input type='password' placeholder='Senha' value={date.password} onChange={e => setDate({...date, password: e.target.value})}/>
+            <Input type='email' placeholder='Email' value={data.email} onChange={e => setData({...data, email: e.target.value})}/>
+            <Input type='password' placeholder='Senha' value={data.password} onChange={e => setData({...data, password: e.target.value})}/>
             <Button onClick={login}>Entrar</Button>
             <Cadastro onClick={() => navigate('/signup')}>Ainda não tem conta? Clique aqui e cadastre-se</Cadastro>
         </Container>
