@@ -142,16 +142,19 @@ export default function HomePage() {
                 <View>Ver mais</View>
             </Block>
             <Line></Line>
-            <Categories>
-                {collections.map(collection => {
-                    return (
-                        <Category key={collection._id} onClick={() => navigate(`/collection/${collection.name}`)}>
-                            <img src={collection.image}/>
-                            <h1>{collection.name}</h1>
-                        </Category>
-                    );
-                })}
-            </Categories>
+            <Block>
+                <Categories>
+                    {collections.map(collection => {
+                        return (
+                            <Category key={collection._id} onClick={() => navigate(`/collection/${collection.name}`)}>
+                                <img src={collection.image}/>
+                                <h1>{collection.name}</h1>
+                            </Category>
+                        );
+                    })}
+                </Categories>
+                <View onClick={() => navigate('/collections')}>Ver mais</View>
+            </Block>
             <Line></Line>
         </Container>
     ) : <Loading><TailSpin color='#D2691E'/></Loading>;
