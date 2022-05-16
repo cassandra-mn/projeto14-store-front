@@ -1,7 +1,7 @@
 import shield from '../assets/shield.png';
 import styled from 'styled-components';
 
-export default function Header(){
+export default function NavBar(){
     return(
         <Container>
             <Logo>
@@ -86,7 +86,6 @@ const Button = styled.button `
     text-align: center;
     border: none;
     color: #FFFFFF;
-    
     :hover {
         cursor: pointer;
     }
